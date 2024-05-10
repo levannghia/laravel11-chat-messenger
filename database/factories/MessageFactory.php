@@ -28,12 +28,12 @@ class MessageFactory extends Factory
         $groupId = null;
 
         if($this->faker->boolean(50)){
-            $group = $this->faker->randomElement(Group::pluck('id')->toArray());
-            $groupId = $this->faker->randomElement($group->users->pluck('id')->toArray());
+            $groupId = $this->faker->randomElement(Group::pluck('id')->toArray());
             $group = Group::find($groupId);
             $senderId = $this->faker->randomElement($group->users->pluck('id')->toArray());
             $receiverId = null;
         }
+
         return [
             'sender_id' => $senderId,
             'receiver_id' => $receiverId,
