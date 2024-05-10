@@ -14,4 +14,16 @@ class Conversation extends Model
         'user_id2',
         'last_message_id',
     ];
+
+    public static function getConversationForSidebar(User $user) {
+        $users = User::getUsersExceptUser($user);
+        $groups = Group::getGroupsForUser($user);
+
+        return $users->map(function (User $user) {
+            return $user->toConversationArray();
+        })->concat($groups->map(function(Group $group) {
+            return $group->toConverstionArray();
+        }));
+    } 
+
 }
