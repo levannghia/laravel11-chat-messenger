@@ -15,6 +15,8 @@ const MessageInput = ({conversation = null}) => {
       setTimeout(() => {
         setInputErrorMessage("");
       }, 3000)
+
+      return;
     }
 
     setMessageSending(true);
