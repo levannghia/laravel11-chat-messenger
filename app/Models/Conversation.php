@@ -15,15 +15,40 @@ class Conversation extends Model
         'last_message_id',
     ];
 
-    public static function getConversationForSidebar(User $user) {
+    public static function getConversationForSidebar(User $user)
+    {
         $users = User::getUsersExceptUser($user);
         $groups = Group::getGroupsForUser($user);
 
         return $users->map(function (User $user) {
             return $user->toConversationArray();
-        })->concat($groups->map(function(Group $group) {
+        })->concat($groups->map(function (Group $group) {
             return $group->toConverstionArray();
         }));
-    } 
+    }
+
+    public static function updateGroupWithMessage($userId1, $userId2, $message)
+    {
+        $conversation = Conversation::where(function ($query) use ($userId1, $userId2) {
+            $query->where('user_id1', $userId1)
+                ->where('user_id2', $userId2);
+        })
+            ->orWhere(function ($query) use ($userId1, $userId2) {
+                $query->where('user_id1', $userId2)
+                    ->where('user_id2', $userId1);
+            })->first();
+
+        if ($conversation) {
+            $conversation->update([
+                'last_message_id' => $message->id,
+            ]);
+        } else {
+            Conversation::create([
+                'last_message_id' => $message->id,
+                'user_id1' => $userId1,
+                'user_id2' => $userId2,
+            ]);
+        }
+    }
 
 }

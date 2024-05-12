@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,12 +18,15 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
-    Route::get('/user/{user}', function(){
+    Route::get('/user/{user}' , [MessageController::class, 'byUser'])->name('chat.user');
+    Route::get('/group/{group}' , [MessageController::class, 'byGroup'])->name('chat.group');
 
-    })->name('chat.user');
-    Route::get('/user/{group}', function(){
+    Route::prefix('message')->name('message.')->group(function(){
+        Route::post('/', [MessageController::class, 'store'])->name('store');
+        Route::delete('/{message}', [MessageController::class, 'destroy'])->name('destroy');
+        Route::get('/older/{message}', [MessageController::class, 'loadOlder'])->name('loadOlder');
+    });
 
-    })->name('chat.group');
 });
 
 Route::middleware('auth')->group(function () {

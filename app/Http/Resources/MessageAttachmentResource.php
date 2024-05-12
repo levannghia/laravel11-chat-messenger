@@ -4,8 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
-class MessageResource extends JsonResource
+class MessageAttachmentResource extends JsonResource
 {
     public static $wrap = false;
     /**
@@ -17,12 +18,11 @@ class MessageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'message' => $this->message,
-            'sender_id' => $this->sender_id,
-            'receiver_id' => $this->receiver_id,
-            'sender' => new UserResource($this->sender),
-            'group_id' => $this->group_id,
-            'attachments' => MessageAttachmentResource::collection($this->whenLoaded('attachments')),
+            'message_id' => $this->message_id,
+            'name' => $this->name,
+            'mime' => $this->mime,
+            'size' => $this->size,
+            'url' => Storage::url($this->path),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
