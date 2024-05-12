@@ -12,8 +12,8 @@ const ChatLayout = ({ children }) => {
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversations] = useState([]);
 
-    console.log('conversations', conversations);
-    console.log('selectedConversation', selectedConversation);
+    // console.log('conversations', conversations);
+    // console.log('selectedConversation', selectedConversation);
 
     useEffect(() => {
         setLocalConversations(conversations);

@@ -11,7 +11,14 @@ import MessageInput from '@/Components/App/MessageInput';
 function Home({ selectedConversation = null, messages = null }) {
     const [localMessages, setLocalMessages] = useState([]);
     const messagesCtrRef = useRef()
-    console.log('message', messages);
+    // console.log('message', messages);
+
+    useEffect(() => {
+       setTimeout(() => {
+            messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
+       }, [10])
+    }, [selectedConversation])
+
     useEffect(() => {
         setLocalMessages(messages ? messages.data.reverse() : []);
     }, [messages])
