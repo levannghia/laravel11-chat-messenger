@@ -23,7 +23,7 @@ class Conversation extends Model
         return $users->map(function (User $user) {
             return $user->toConversationArray();
         })->concat($groups->map(function (Group $group) {
-            return $group->toConverstionArray();
+            return $group->toConversationArray();
         }));
     }
 

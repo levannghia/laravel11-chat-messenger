@@ -50,7 +50,7 @@ class Group extends Model
         );
     }
 
-    public function toConverstionArray(){
+    public function toConversationArray(){
         return [
             'id' => $this->id,
             'name' => $this->name,
