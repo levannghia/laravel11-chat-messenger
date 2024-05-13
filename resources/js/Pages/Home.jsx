@@ -7,21 +7,41 @@ import { useRef } from 'react';
 import ConversationHeader from '@/Components/App/ConversationHeader';
 import MessageItem from '@/Components/App/MessageItem';
 import MessageInput from '@/Components/App/MessageInput';
+import { useEventBus } from '@/EventBus';
 
 function Home({ selectedConversation = null, messages = null }) {
     const [localMessages, setLocalMessages] = useState([]);
     const messagesCtrRef = useRef()
+    const { on } = useEventBus()
     // console.log('message', messages);
 
     useEffect(() => {
-       setTimeout(() => {
-            messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
-       }, [10])
+        setTimeout(() => {
+            if (messagesCtrRef.current) {
+                messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
+            }
+        }, 10)
+
+        const offCreated = on('message.created', messageCreated);
+
+        return () => {
+            offCreated();
+        }
     }, [selectedConversation])
 
     useEffect(() => {
         setLocalMessages(messages ? messages.data.reverse() : []);
     }, [messages])
+
+    const messageCreated = (message) => {
+        if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id) {
+            setLocalMessages((prevMessage) => [...prevMessage, message]);
+        }
+
+        if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id == message.receiver_id)){
+            setLocalMessages((prevMessage) => [...prevMessage, message]);
+        }
+    }
 
     return (
         <>
@@ -57,7 +77,7 @@ function Home({ selectedConversation = null, messages = null }) {
                             </div>
                         )}
                     </div>
-                    <MessageInput conversation={selectedConversation}/>
+                    <MessageInput conversation={selectedConversation} />
                 </>
             )}
         </>

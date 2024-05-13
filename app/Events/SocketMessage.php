@@ -9,10 +9,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SocketMessage implements ShouldBroadcast //ShouldBroadcast dùng để sử dụng hàng đợi quue
+class SocketMessage implements ShouldBroadcastNow //ShouldBroadcast dùng để sử dụng hàng đợi quue, ShouldBroadcastNow ko can chay queu
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,7 +27,7 @@ class SocketMessage implements ShouldBroadcast //ShouldBroadcast dùng để s�
 
     public function broadcastWith(){
         return [
-            'messages' => new MessageResource($this->message),
+            'message' => new MessageResource($this->message),
         ];
     }
 
@@ -43,7 +44,7 @@ class SocketMessage implements ShouldBroadcast //ShouldBroadcast dùng để s�
         if($m->group_id){
             $channels[] = new PrivateChannel('message.group.' . $m->group_id);
         }else{
-            $channels [] = new PrivateChannel('message.user.' . collect([$m->sender_id, $m->receiver_id])->sort()->implode('-'));
+            $channels[] = new PrivateChannel('message.user.' . collect([$m->sender_id, $m->receiver_id])->sort()->implode('-'));
         }
         
         return $channels;
