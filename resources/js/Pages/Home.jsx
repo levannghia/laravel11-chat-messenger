@@ -1,17 +1,19 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import ChatLayout from '@/Layouts/ChatLayout';
 import { Head } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
 import { useRef } from 'react';
 import ConversationHeader from '@/Components/App/ConversationHeader';
 import MessageItem from '@/Components/App/MessageItem';
 import MessageInput from '@/Components/App/MessageInput';
 import { useEventBus } from '@/EventBus';
+import axios from 'axios';
 
 function Home({ selectedConversation = null, messages = null }) {
     const [localMessages, setLocalMessages] = useState([]);
     const messagesCtrRef = useRef()
+    const loadMoreIntersectRef = useRef(null);
     const { on } = useEventBus()
     // console.log('message', messages);
 
@@ -43,9 +45,10 @@ function Home({ selectedConversation = null, messages = null }) {
         }
     }
 
-    const loadMoreMessages = () => {
-        // const firstMessage = loadMes
-    }
+    const loadMoreMessages = useCallback(() => {
+        const firstMessage = localMessages[0];
+        axios.get(route('message.loadOlder', firstMessage.id));
+    }, [])
 
     return (
         <>
