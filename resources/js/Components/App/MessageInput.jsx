@@ -70,6 +70,7 @@ const MessageInput = ({ conversation = null }) => {
           />
           <button
             onClick={onSend}
+            disabled={messageSending}
             className='btn btn-info rounded-l-none'
           >
             {messageSending && (

@@ -53,18 +53,27 @@ class MessageController extends Controller
 
     public function loadOlder(Message $message)
     {
+        // dd($message);
         if ($message->group_id) {
             $messages = Message::where('created_at', '<', $message->created_at)
                 ->where('group_id', $message->group_id)
                 ->latest()
                 ->paginate(10);
         } else {
-            $messages = Message::where('created_at', '<', $message->creeated_at)
+            $messages = Message::where('created_at', '<', $message->created_at)
+                // ->where(function ($query) use ($message) {
+                //     $query->where('sender_id', $message->sender_id)
+                //         ->where('receiver_id', $message->receiver_id)
+                //         ->orWhere('receiver_id', $message->sender_id)
+                //         ->orWhere('sender_id', $message->receiver_id);
+                // })
                 ->where(function ($query) use ($message) {
                     $query->where('sender_id', $message->sender_id)
-                        ->where('receiver_id', $message->receiver_id)
-                        ->orWhere('receiver_id', $message->sender_id)
-                        ->orWhere('sender_id', $message->receiver_id);
+                    ->orWhere('sender_id', $message->receiver_id);
+                })
+                ->Where(function ($query) use ($message) {
+                    $query->Where('receiver_id', $message->receiver_id)
+                    ->orWhere('receiver_id', $message->sender_id);
                 })
                 ->latest()
                 ->paginate(10);

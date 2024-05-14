@@ -3,9 +3,11 @@ import { PencilSquareIcon } from '@heroicons/react/24/solid'
 import React, { useEffect, useState } from 'react'
 import TextInput from '@/Components/TextInput';
 import ConversationItem from '@/Components/App/ConversationItem';
+import { useEventBus } from '@/EventBus';
 
 const ChatLayout = ({ children }) => {
     const page = usePage();
+    const { on } = useEventBus()
     const conversations = page.props.conversations;
     const selectedConversation = page.props.selectedConversation;
     const [onlineUser, setOnlineUser] = useState({})
@@ -80,6 +82,14 @@ const ChatLayout = ({ children }) => {
         }
     }, [])
 
+    useEffect(() => {
+        const offCreated = on("message.created", messageCreated);
+
+        return () => {
+            offCreated();
+        }
+    }, [on]);
+
     const isOnlineUser = (userId) => onlineUser[userId];
 
     const onSearch = (val) => {
@@ -93,6 +103,28 @@ const ChatLayout = ({ children }) => {
                 );
             })
         )
+    }
+
+    const messageCreated = (message) => {
+        setLocalConversations((oldUsers) => {
+            return oldUsers.map((u) => {
+                if(message.receiver_id && !u.is_group && (u.id == message.sender_id || u.id == message.receiver_id)){
+                    u.last_message_date = message.created;
+                    u.last_message = message.message;
+
+                    return u;
+                }
+
+                if(message.is_group && u.is_group && u.id == message.group_id) {
+                    u.last_message_date = message.created;
+                    u.last_message = message.message;
+
+                    return u;
+                }
+
+                return u;
+            })
+        })
     }
 
     return (
