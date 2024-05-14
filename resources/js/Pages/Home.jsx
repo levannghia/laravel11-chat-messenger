@@ -43,6 +43,10 @@ function Home({ selectedConversation = null, messages = null }) {
         }
     }
 
+    const loadMoreMessages = () => {
+        // const firstMessage = loadMes
+    }
+
     return (
         <>
             <Head title="Home" />
