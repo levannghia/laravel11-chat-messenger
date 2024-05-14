@@ -16,9 +16,9 @@ export const EventBusProvider = ({children}) => {
         if(!events[name]){
             events[name] = [];
         }
-
+        
         events[name].push(cb)
-
+        
         return () => {
             events[name] = events[name].filter((callback) => callback !== cb)
         }
@@ -29,6 +29,7 @@ export const EventBusProvider = ({children}) => {
             {children}
         </EventBusContext.Provider>
     )
+
 }
 
 export const useEventBus = () => {
