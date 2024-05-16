@@ -109,14 +109,14 @@ const ChatLayout = ({ children }) => {
         setLocalConversations((oldUsers) => {
             return oldUsers.map((u) => {
                 if(message.receiver_id && !u.is_group && (u.id == message.sender_id || u.id == message.receiver_id)){
-                    u.last_message_date = message.created;
+                    u.last_message_date = message.created_at;
                     u.last_message = message.message;
 
                     return u;
                 }
 
                 if(message.is_group && u.is_group && u.id == message.group_id) {
-                    u.last_message_date = message.created;
+                    u.last_message_date = message.created_at;
                     u.last_message = message.message;
 
                     return u;
