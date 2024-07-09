@@ -9,11 +9,14 @@ import MessageItem from '@/Components/App/MessageItem';
 import MessageInput from '@/Components/App/MessageInput';
 import { useEventBus } from '@/EventBus';
 import axios from 'axios';
+import AttachmentPreviewModal from '@/Components/App/AttachmentPreviewModal';
 
 function Home({ selectedConversation = null, messages = null }) {
     const [localMessages, setLocalMessages] = useState([]);
     const [noMoreMessages, setNoMoreMessages] = useState(false);
-    const [scrollFromBottom, setScrollFromBottom] = useState(0)
+    const [scrollFromBottom, setScrollFromBottom] = useState(0);
+    const [showAttachmentPriview, setShowAttachmentPriview] = useState(false)
+    const [perviewAttachment, setPerviewAttachment] = useState({})
     const messagesCtrRef = useRef(null)
     const loadMoreIntersectRef = useRef(null);
     const { on } = useEventBus()
@@ -107,6 +110,15 @@ function Home({ selectedConversation = null, messages = null }) {
             console.error(error);
         }
     }, [localMessages, noMoreMessages])
+
+    const onAttachmentClick = (attachments, ind) => {
+        setPerviewAttachment({
+            attachments,
+            ind
+        })
+
+        setShowAttachmentPriview(true);
+    }
     // console.log(messagesCtrRef.current.scrollHeight);
     return (
         <>
@@ -145,6 +157,14 @@ function Home({ selectedConversation = null, messages = null }) {
                     </div>
                     <MessageInput conversation={selectedConversation} />
                 </>
+            )}
+            {perviewAttachment.attachments &&  (
+                <AttachmentPreviewModal
+                    attachments={perviewAttachment.attachments}
+                    index={perviewAttachment.ind}
+                    show={showAttachmentPriview}
+                    onClose={() => setShowAttachmentPriview(false)}
+                />
             )}
         </>
     );
