@@ -7,7 +7,7 @@ import MessageAttachments from './MessageAttachments'
 
 const MessageItem = ({message, attachmentClick}) => {
     const currentUser = usePage().props.auth.user;
-
+    // console.log(message);
   return (
     <div
         className={

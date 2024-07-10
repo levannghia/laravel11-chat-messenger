@@ -21,6 +21,7 @@ class MessageController extends Controller
     public function byUser(User $user)
     {
         $messages = Message::query()
+            ->with(['attachments'])
             ->whereNull('group_id')
             ->where(function ($query) use ($user) {
                 $query->where('sender_id', auth()->id())
