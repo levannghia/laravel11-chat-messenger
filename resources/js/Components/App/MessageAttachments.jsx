@@ -9,10 +9,10 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
                 <div className='mt-2 flex flex-wrap justify-end gap-1'>
                     {attachments.map((attachment, ind) => (
                         <div
-                            onClick={(e) => attachmentClick(attachment, ind)}
+                            onClick={() => attachmentClick(attachment, ind)}
                             key={attachment.id}
                             className={`group flex flex-col items-center justify-center text-gray-500 relative cursor-pointer ` +
-                                isAudio(attachment) ? 'w-84' : 'w-32 aspect-square bg-blue-100'
+                                isAudio(attachment) ? 'w-64' : 'w-32 aspect-square bg-blue-100'
                             }
                         >
                             {!isAudio(attachment) && (
@@ -69,7 +69,7 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
                                     className='flex flex-col justify-center items-center'
                                 >
                                     <PaperClipIcon className='w-10 h-10 mb-3'/>
-                                    <small>{attachment.name}</small>
+                                    <small className='text-center'>{attachment.name}</small>
                                 </a>
                             )}
                         </div>

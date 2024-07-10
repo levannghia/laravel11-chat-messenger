@@ -149,8 +149,8 @@ function Home({ selectedConversation = null, messages = null }) {
                         {localMessages.length > 0 && (
                             <div className='flex flex-col flex-1'>
                                 <div ref={loadMoreIntersectRef}></div>
-                                {localMessages.map((message) => (
-                                    <MessageItem key={message.id} message={message} />
+                                {localMessages.map((message, index) => (
+                                    <MessageItem key={message.id} message={message} attachmentClick={(attachment, ind) => onAttachmentClick(message.attachments, ind)}/>
                                 ))}
                             </div>
                         )}

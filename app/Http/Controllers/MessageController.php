@@ -25,11 +25,11 @@ class MessageController extends Controller
             ->whereNull('group_id')
             ->where(function ($query) use ($user) {
                 $query->where('sender_id', auth()->id())
-                ->orWhere('sender_id', $user->id);
+                    ->orWhere('sender_id', $user->id);
             })
             ->Where(function ($query) use ($user) {
                 $query->Where('receiver_id', $user->id)
-                ->orWhere('receiver_id', auth()->id());
+                    ->orWhere('receiver_id', auth()->id());
             })
             ->latest()
             ->paginate(10);
@@ -57,6 +57,7 @@ class MessageController extends Controller
         // dd($message);
         if ($message->group_id) {
             $messages = Message::where('created_at', '<', $message->created_at)
+                ->with(['attachments'])
                 ->where('group_id', $message->group_id)
                 ->latest()
                 ->paginate(10);
@@ -68,13 +69,14 @@ class MessageController extends Controller
                 //         ->orWhere('receiver_id', $message->sender_id)
                 //         ->orWhere('sender_id', $message->receiver_id);
                 // })
+                ->with(['attachments'])
                 ->where(function ($query) use ($message) {
                     $query->where('sender_id', $message->sender_id)
-                    ->orWhere('sender_id', $message->receiver_id);
+                        ->orWhere('sender_id', $message->receiver_id);
                 })
                 ->Where(function ($query) use ($message) {
                     $query->Where('receiver_id', $message->receiver_id)
-                    ->orWhere('receiver_id', $message->sender_id);
+                        ->orWhere('receiver_id', $message->sender_id);
                 })
                 ->latest()
                 ->paginate(10);
@@ -105,7 +107,7 @@ class MessageController extends Controller
 
                 $model = [
                     'message_id' => $message->id,
-                    'name' => $file->geClientOriginalName(),
+                    'name' => $file->getClientOriginalName(),
                     'mime' => $file->getClientMimeType(),
                     'size' => $file->getSize(),
                     'path' => $file->store($directory, 'public'),
@@ -126,8 +128,9 @@ class MessageController extends Controller
             Group::updateGroupWithMessage($groupId, $message);
         }
 
+        $message = $message->load('attachments');
         SocketMessage::dispatch($message);
-
+        // dd($message);
         return new MessageResource($message);
     }
 
