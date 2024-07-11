@@ -27,6 +27,11 @@ class Conversation extends Model
         }));
     }
 
+    public function lastMessage()
+    {
+        return $this->belongsTo(Message::class, 'last_message_id');
+    }
+
     public static function updateGroupWithMessage($userId1, $userId2, $message)
     {
         $conversation = Conversation::where(function ($query) use ($userId1, $userId2) {

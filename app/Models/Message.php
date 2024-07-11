@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\MessageObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([MessageObserver::class])]
 class Message extends Model
 {
     use HasFactory;

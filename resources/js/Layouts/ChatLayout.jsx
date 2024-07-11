@@ -84,9 +84,11 @@ const ChatLayout = ({ children }) => {
 
     useEffect(() => {
         const offCreated = on("message.created", messageCreated);
+        const offDeleted = on("message.deleted", messageDeleted);
 
         return () => {
             offCreated();
+            offDeleted();
         }
     }, [on]);
 
@@ -125,6 +127,14 @@ const ChatLayout = ({ children }) => {
                 return u;
             })
         })
+    }
+
+    const messageDeleted = (prevMessage) => {
+        if(!prevMessage){
+            return;
+        }
+
+        messageCreated(prevMessage);
     }
 
     return (

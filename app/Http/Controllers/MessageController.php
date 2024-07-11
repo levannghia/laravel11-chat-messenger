@@ -21,7 +21,7 @@ class MessageController extends Controller
     public function byUser(User $user)
     {
         $messages = Message::query()
-            ->with(['attachments'])
+            ->with(['attachments', 'sender'])
             ->whereNull('group_id')
             ->where(function ($query) use ($user) {
                 $query->where('sender_id', auth()->id())
@@ -57,7 +57,7 @@ class MessageController extends Controller
         // dd($message);
         if ($message->group_id) {
             $messages = Message::where('created_at', '<', $message->created_at)
-                ->with(['attachments'])
+                ->with(['attachments', 'sender'])
                 ->where('group_id', $message->group_id)
                 ->latest()
                 ->paginate(10);
@@ -102,7 +102,7 @@ class MessageController extends Controller
 
         if ($files) {
             foreach ($files as $file) {
-                $directory = "attachments/$year/$month/" . Str::random(32);
+                $directory = "attachments/$year/$month"; //. Str::random(32);
                 Storage::makeDirectory($directory);
 
                 $model = [
@@ -140,7 +140,28 @@ class MessageController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
+        $group = null;
+        $conversation = null;
+        $lastMessage = null;
+        
+        if ($message->group_id) {
+            $group = Group::where('last_messgae_id', $message->id)->first();
+
+        } else {
+            $conversation = Conversation::where('last_message_id', $message->id)->first();
+        }
+
         $message->delete();
-        return response('', 204);
+
+        if ($group) {
+            $group = Group::find($group->id);
+            $lastMessage = $group->lastMessage;
+        } elseif ($conversation) {
+            $conversation = Conversation::find($conversation->id);
+            $lastMessage = $conversation->lastMessage;
+        }
+        return response()->json([
+            'message' => $lastMessage ? new MessageResource($lastMessage->load('attachments')) : null
+        ]);
     }
 }
