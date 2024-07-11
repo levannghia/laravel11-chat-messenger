@@ -10,15 +10,13 @@ const AttachmentPreviewModal = ({ index, attachments, show = false, onClose = ()
     setCurrentIndex(index)
   }, [index])
 
-  console.log(currentIndex);
-
-  const attachment = useMemo(() => {
-    return attachments[currentIndex];
-  }, [attachments, currentIndex])
-
   const previewableAttachments = useMemo(() => {
     return attachments.filter((attachment) => isPriviewable(attachment))
   }, [attachments])
+
+  const attachment = useMemo(() => {
+    return previewableAttachments[currentIndex];
+  }, [attachments, currentIndex])
 
   const close = () => {
     onClose();
@@ -55,7 +53,7 @@ const AttachmentPreviewModal = ({ index, attachments, show = false, onClose = ()
           <div className="fixed inset-0 bg-black/25" />
         </Transition.Child>
         <div className='fixed inset-0 overflow-y-auto'>
-          <div className='h-screen w-screen'>
+          <div className='h-screen w-screen flex mx-auto justify-center items-center'>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -76,18 +74,18 @@ const AttachmentPreviewModal = ({ index, attachments, show = false, onClose = ()
                   {currentIndex > 0 && (
                     <div
                       onClick={prev}
-                      className='absolute opacity-100 text-gray-100 cursor-pointer flex items-center justify-center w-16 h-16 left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 z-30'
+                      className='absolute opacity-100 text-gray-100 cursor-pointer flex items-center justify-center w-12 h-12 left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 z-30'
                     >
-                      <ChevronLeftIcon className='w-12' />
+                      <ChevronLeftIcon className='w-8' />
                     </div>
                   )}
 
                   {currentIndex < previewableAttachments.length - 1 && (
                     <div
                       onClick={next}
-                      className='absolute opacity-100 text-gray-100 cursor-pointer flex items-center justify-center w-16 h-16 right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 z-30'
+                      className='absolute opacity-100 text-gray-100 cursor-pointer flex items-center justify-center w-12 h-12 right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 z-30'
                     >
-                      <ChevronRightIcon className='w-12' />
+                      <ChevronRightIcon className='w-8' />
                     </div>
                   )}
 

@@ -9,7 +9,7 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
                 <div className='mt-2 flex flex-wrap justify-end gap-1'>
                     {attachments.map((attachment, ind) => (
                         <div
-                            onClick={() => attachmentClick(attachment, ind)}
+                            onClick={() => attachmentClick(attachments, ind)}
                             key={attachment.id}
                             className={`group flex flex-col items-center justify-center text-gray-500 relative cursor-pointer ` +
                                 isAudio(attachment) ? 'w-64' : 'w-32 aspect-square bg-blue-100'
