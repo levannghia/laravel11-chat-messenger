@@ -62,7 +62,7 @@ class Group extends Model
             'description' => $this->description,
             'is_group' => true,
             'is_user' => false,
-            'is_owner' => $this->owner_id,
+            'owner_id' => $this->owner_id,
             'users' => $this->users,
             'user_ids' => $this->users->pluck('id'),
             'created_at' => $this->created_at,

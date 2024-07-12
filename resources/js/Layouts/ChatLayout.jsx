@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import TextInput from '@/Components/TextInput';
 import ConversationItem from '@/Components/App/ConversationItem';
 import { useEventBus } from '@/EventBus';
+import GroupModal from '@/Components/App/GroupModal';
 
 const ChatLayout = ({ children }) => {
     const page = usePage();
@@ -13,6 +14,7 @@ const ChatLayout = ({ children }) => {
     const [onlineUser, setOnlineUser] = useState({})
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversations] = useState([]);
+    const [showGroupModal, setShowGroupModal] = useState(false)
 
     // console.log('conversations', conversations);
     // console.log('selectedConversation', selectedConversation);
@@ -154,6 +156,7 @@ const ChatLayout = ({ children }) => {
                             data-tip="Create new group"
                         >
                             <button
+                                onClick={() => setShowGroupModal(true)}
                                 className='text-gray-400 hover:text-gray-200'
                             >
                                 <PencilSquareIcon className='w-4 h-4 inline-block ml-2' />
@@ -182,6 +185,7 @@ const ChatLayout = ({ children }) => {
                     {children}
                 </div>
             </div>
+            <GroupModal show={showGroupModal} onClose={() => setShowGroupModal(false)}/>
         </>
     )
 }

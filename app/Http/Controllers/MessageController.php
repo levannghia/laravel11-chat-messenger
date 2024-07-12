@@ -43,6 +43,7 @@ class MessageController extends Controller
     public function byGroup(Group $group)
     {
         $messages = Message::where('group_id', $group->id)
+            ->with(['attachments', 'sender'])
             ->latest()
             ->paginate(10);
 
@@ -69,7 +70,7 @@ class MessageController extends Controller
                 //         ->orWhere('receiver_id', $message->sender_id)
                 //         ->orWhere('sender_id', $message->receiver_id);
                 // })
-                ->with(['attachments'])
+                ->with(['attachments', 'sender'])
                 ->where(function ($query) use ($message) {
                     $query->where('sender_id', $message->sender_id)
                         ->orWhere('sender_id', $message->receiver_id);
@@ -143,7 +144,7 @@ class MessageController extends Controller
         $group = null;
         $conversation = null;
         $lastMessage = null;
-        
+
         if ($message->group_id) {
             $group = Group::where('last_messgae_id', $message->id)->first();
 
