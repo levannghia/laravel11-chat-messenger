@@ -129,11 +129,12 @@ const ChatLayout = ({ children }) => {
         })
     }
 
-    const messageDeleted = (prevMessage) => {
+    const messageDeleted = ({prevMessage}) => {
         if(!prevMessage){
             return;
         }
 
+        console.log(prevMessage);
         messageCreated(prevMessage);
     }
 
