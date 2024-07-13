@@ -9,7 +9,7 @@ import GroupDescriptionPopover from './GroupDescriptionPopover'
 import GroupUsersPopover from './GroupUsersPopover'
 
 const ConversationHeader = ({ selectedConversation }) => {
-    console.log(selectedConversation);
+    // console.log(selectedConversation);
     const authUser = usePage().props.auth.user;
     const { emit } = useEventBus();
 

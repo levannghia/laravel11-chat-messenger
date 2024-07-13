@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -25,6 +26,12 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::post('/', [MessageController::class, 'store'])->name('store');
         Route::delete('/{message}', [MessageController::class, 'destroy'])->name('destroy');
         Route::get('/older/{message}', [MessageController::class, 'loadOlder'])->name('loadOlder');
+    });
+
+    Route::prefix('group')->name('group.')->group(function(){
+        Route::post('/', [GroupController::class, 'store'])->name('store');
+        Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
+        Route::put('/{group}', [GroupController::class, 'update'])->name('update');
     });
 
 });
