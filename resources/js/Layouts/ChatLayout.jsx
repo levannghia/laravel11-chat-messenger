@@ -87,10 +87,14 @@ const ChatLayout = ({ children }) => {
     useEffect(() => {
         const offCreated = on("message.created", messageCreated);
         const offDeleted = on("message.deleted", messageDeleted);
+        const offGroupModalShow = on("GroupModal.show", () => {
+            setShowGroupModal(true)
+        })
 
         return () => {
             offCreated();
             offDeleted();
+            offGroupModalShow();
         }
     }, [on]);
 

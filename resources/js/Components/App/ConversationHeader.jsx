@@ -60,7 +60,7 @@ const ConversationHeader = ({ selectedConversation }) => {
                                 <>
                                     <div className='tooltip tooltip-left' data-tip="Edit Group">
                                         <button
-                                            onClick={(ev) => {
+                                            onClick={(e) => {
                                                 emit('GroupModal.show', selectedConversation)
                                             }}
                                             className='text-gray-400 hover:text-gray-200'

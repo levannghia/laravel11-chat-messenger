@@ -6,7 +6,7 @@ const UserPicker = ({ value, options, onSelect }) => {
     const [selected, setSelected] = useState(value);
     const [query, setQuery] = useState();
 
-    const filteredPeople = query === "" ? options : options.filter((person) => person.name.toLowerCase().replace(/\s+/g, '').includes(query.toLowerCase().replace(/\s+/g, '')));
+    const filteredPeople = query === "" ? options : options.filter((person) => person?.name?.toLowerCase().replace(/\s+/g, '').includes(query?.toLowerCase().replace(/\s+/g, '')));
 
     const onSeleted = (persons) => {
         setSelected(persons);
@@ -83,7 +83,7 @@ const UserPicker = ({ value, options, onSelect }) => {
                     {selected.map((person) => (
                         <div
                             key={person.id}
-                            className='badge badge-primary gap-2'
+                            className='badge badge-success text-gray-200 py-3.5 gap-2'
                         >
                             {person.name}
                         </div>

@@ -65,13 +65,13 @@ const GroupModal = ({ show = false, onClose = () => { } }) => {
     }, [on])
 
     return (
-        <Modal show={show} onClose={onClose}>
+        <Modal show={show} onClose={closeModal}>
             <form
                 onSubmit={createOrUpdateGroup}
                 className='p-6 overflow-y-auto'
             >
                 <h2
-                    className='text-xl font-medium text-gray-900 dark:text-gray-100'
+                    className='text-xl font-medium text-gray-900'
                 >
                     {group.id ? `Edit Group ${group.name}` : `Create new Group`}
                 </h2>
@@ -98,7 +98,7 @@ const GroupModal = ({ show = false, onClose = () => { } }) => {
                         disabled={!!group.id}
                         onChange={(e) => setData("description", e.target.value)}
                         required
-                        isForcused
+                        isForcused={true}
                     />
                     <InputError className='mt-2' message={errors.description}/>
                 </div>

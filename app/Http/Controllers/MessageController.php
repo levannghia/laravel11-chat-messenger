@@ -162,7 +162,7 @@ class MessageController extends Controller
             $lastMessage = $conversation->lastMessage;
         }
         return response()->json([
-            'message' => $lastMessage ? new MessageResource($lastMessage->load('attachments')) : null
+            'message' => $lastMessage ? new MessageResource($lastMessage) : null
         ]);
     }
 }
