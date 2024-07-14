@@ -152,7 +152,7 @@ const ChatLayout = ({ children }) => {
             return;
         }
 
-        console.log(prevMessage);
+        // console.log(prevMessage);
         messageCreated(prevMessage);
     }
 

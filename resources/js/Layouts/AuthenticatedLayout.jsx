@@ -13,6 +13,7 @@ export default function Authenticated({ header, children }) {
     const page = usePage();
     const user = page.props.auth.user;
     const conversations = page.props.conversations;
+    const selectedConversation = page.props.selectedConversation;
     const { emit } = useEventBus();
 
     useEffect(() => {
@@ -41,22 +42,37 @@ export default function Authenticated({ header, children }) {
                     if (message.sender_id === user.id) {
                         return;
                     }
-                    emit("newMessageNotification", {
-                        user: message.sender,
-                        group_id: message.group_id,
-                        message: message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : message.attachments.length + " attachments"}`
-                    })
+
+                    if (message.group_id) {
+                        if (selectedConversation.id != message.group_id) {
+                            emit("newMessageNotification", {
+                                user: message.sender,
+                                group_id: message.group_id,
+                                message: message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : message.attachments.length + " attachments"}`
+                            })
+                        }
+                    } else {
+                        if (selectedConversation.id != message.sender_id) {
+                            emit("newMessageNotification", {
+                                user: message.sender,
+                                group_id: message.group_id,
+                                message: message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : message.attachments.length + " attachments"}`
+                            })
+                        }
+                    }
+
+
                 });
 
-            if(conversation.is_group) {
+            if (conversation.is_group) {
                 Echo.private(`group.deleted.${conversation.id}`)
-                .listen("GroupDelete", (e) => {
-                    console.log("Group Deleted", e);
-                    emit("group.deleted", {id: e.id, name: e.name});
-                })
-                .error((err) => {
-                    console.error(err);
-                })
+                    .listen("GroupDelete", (e) => {
+                        console.log("Group Deleted", e);
+                        emit("group.deleted", { id: e.id, name: e.name });
+                    })
+                    .error((err) => {
+                        console.error(err);
+                    })
             }
         });
 
@@ -76,7 +92,7 @@ export default function Authenticated({ header, children }) {
 
                 Echo.leave(channel)
 
-                if(conversation.is_group){
+                if (conversation.is_group) {
                     Echo.leave(`group.delete.${conversation.id}`);
                 }
             })

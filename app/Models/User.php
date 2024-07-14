@@ -81,9 +81,10 @@ class User extends Authenticatable
     public function toConversationArray(){
         return [
             'id' => $this->id,
-            'avatar' => $this->avatar ? Storage::url($this->avatar) : null,
+            'avatar_url' => $this->avatar ? Storage::url($this->avatar) : null,
             'name' => $this->name,
             'email' => $this->email,
+            'blocked_at' => $this->blocked_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'is_admin' => (bool) $this->is_admin,

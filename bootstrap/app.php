@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\ActiveUser;
+use App\Http\Middleware\AdminUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,7 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
-        //
+        
+        $middleware->alias([
+            'admin' => AdminUser::class,
+            'active' => ActiveUser::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

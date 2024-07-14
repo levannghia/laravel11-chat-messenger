@@ -4,6 +4,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function(){
+Route::middleware(['auth', 'verified', 'active'])->group(function(){
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
     Route::get('/user/{user}' , [MessageController::class, 'byUser'])->name('chat.user');
     Route::get('/group/{group}' , [MessageController::class, 'byGroup'])->name('chat.group');
@@ -32,6 +33,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
         Route::post('/', [GroupController::class, 'store'])->name('store');
         Route::put('/{group}', [GroupController::class, 'update'])->name('update');
         Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::middleware(['admin'])->prefix('user')->name('user.')->group(function () {
+        Route::post('/change-role/{user}', [UserController::class, 'changeRole'])->name('changeRole');
+        Route::post('/block-unblock/{user}', [UserController::class, 'blockUnblock'])->name('blockUnblock');
     });
 
 });
