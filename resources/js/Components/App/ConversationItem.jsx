@@ -61,7 +61,7 @@ const ConversationItem = ({ conversation, seletedConversation = null, online = n
           </p>
         )}
       </div>
-      {currentUser.is_admin && conversation.is_user && <UserOptionDropdown conversation={conversation} />}
+      {!!currentUser.is_admin && conversation.is_user && <UserOptionDropdown conversation={conversation} />}
     </Link>
   )
 }

@@ -30,8 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::prefix('group')->name('group.')->group(function(){
         Route::post('/', [GroupController::class, 'store'])->name('store');
-        Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
         Route::put('/{group}', [GroupController::class, 'update'])->name('update');
+        Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
     });
 
 });

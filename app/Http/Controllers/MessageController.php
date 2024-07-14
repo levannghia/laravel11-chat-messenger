@@ -146,7 +146,7 @@ class MessageController extends Controller
         $lastMessage = null;
 
         if ($message->group_id) {
-            $group = Group::where('last_messgae_id', $message->id)->first();
+            $group = Group::where('last_message_id', $message->id)->first();
 
         } else {
             $conversation = Conversation::where('last_message_id', $message->id)->first();

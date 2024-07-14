@@ -81,10 +81,9 @@ const GroupModal = ({ show = false, onClose = () => { } }) => {
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        disabled={!!group.id}
                         onChange={(e) => setData("name", e.target.value)}
-                        required
-                        isForcused
+                        required={true}
+                        isFocused={true}
                     />
                     <InputError className='mt-2' message={errors.name}/>
                 </div>
@@ -95,10 +94,8 @@ const GroupModal = ({ show = false, onClose = () => { } }) => {
                         row={3}
                         className="mt-1 block w-full"
                         value={data.description || ""}
-                        disabled={!!group.id}
                         onChange={(e) => setData("description", e.target.value)}
                         required
-                        isForcused={true}
                     />
                     <InputError className='mt-2' message={errors.description}/>
                 </div>
@@ -111,7 +108,7 @@ const GroupModal = ({ show = false, onClose = () => { } }) => {
                     />
                     <InputError className='mt-2' message={errors.user_ids}/>
                 </div>
-                <div className='mt-6 flex justify-end'>
+                <div className='mt-6 flex flex-wrap justify-end'>
                     <SecondaryButton onClick={closeModal}>
                         Cancel
                     </SecondaryButton>

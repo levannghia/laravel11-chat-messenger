@@ -46,7 +46,18 @@ export default function Authenticated({ header, children }) {
                         group_id: message.group_id,
                         message: message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : message.attachments.length + " attachments"}`
                     })
+                });
+
+            if(conversation.is_group) {
+                Echo.private(`group.deleted.${conversation.id}`)
+                .listen("GroupDelete", (e) => {
+                    console.log("Group Deleted", e);
+                    emit("group.deleted", {id: e.id, name: e.name});
                 })
+                .error((err) => {
+                    console.error(err);
+                })
+            }
         });
 
         return () => {
@@ -64,6 +75,10 @@ export default function Authenticated({ header, children }) {
                 }
 
                 Echo.leave(channel)
+
+                if(conversation.is_group){
+                    Echo.leave(`group.delete.${conversation.id}`);
+                }
             })
         }
     }, [conversations]);
@@ -185,7 +200,7 @@ export default function Authenticated({ header, children }) {
                 {children}
             </div>
             <Toast />
-            <NewMessageNotification/>
+            <NewMessageNotification />
         </>
 
     );

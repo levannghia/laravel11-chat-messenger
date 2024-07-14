@@ -22,7 +22,7 @@ class MessageObserver
         $message->attachments()->delete();
 
         if($message->group_id){
-            $group = Group::where('last_messgae_id', $message->id)->first();
+            $group = Group::where('last_message_id', $message->id)->first();
 
             if($group){
                 $prevMessage = Message::where('group_id', $message->group_id)->where('id', '!=', $message->id)->latest()->limit(1)->first();
