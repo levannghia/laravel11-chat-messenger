@@ -44,7 +44,7 @@ export default function Authenticated({ header, children }) {
                     }
 
                     if (message.group_id) {
-                        if (selectedConversation.id != message.group_id) {
+                        if (selectedConversation?.id != message.group_id) {
                             emit("newMessageNotification", {
                                 user: message.sender,
                                 group_id: message.group_id,
@@ -52,7 +52,7 @@ export default function Authenticated({ header, children }) {
                             })
                         }
                     } else {
-                        if (selectedConversation.id != message.sender_id) {
+                        if (selectedConversation?.id != message.sender_id) {
                             emit("newMessageNotification", {
                                 user: message.sender,
                                 group_id: message.group_id,
@@ -99,7 +99,11 @@ export default function Authenticated({ header, children }) {
         }
     }, [conversations]);
 
-
+    useEffect(() => {
+        if (Notification.permission !== "granted"){
+            Notification.requestPermission();
+        }
+    }, [])
 
     return (
         <>
