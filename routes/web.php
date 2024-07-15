@@ -6,6 +6,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +17,14 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::get('/artisan-storage-link', function(){
+    return Artisan::call('storage:link');
+});
+
+Route::get('/artisan-optimize', function(){
+    return Artisan::call('optimize');
 });
 
 Route::middleware(['auth', 'verified', 'active'])->group(function(){
