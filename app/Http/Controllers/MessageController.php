@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PublicTest;
 use App\Events\SocketMessage;
 use App\Http\Requests\StoreMessengeRequest;
 use App\Http\Resources\MessageResource;
@@ -131,6 +132,7 @@ class MessageController extends Controller
 
         $message = $message->load('attachments');
         SocketMessage::dispatch($message);
+        event(new PublicTest(["user" => "user 1"]));
         // dd($message);
         return new MessageResource($message);
     }

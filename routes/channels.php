@@ -23,3 +23,9 @@ Broadcast::channel('message.group.{groupId}', function(User $user, int $groupId)
 Broadcast::channel('group.deleted.{groupId}', function(User $user, int $groupId){
     return $user->groups->contains('id', $groupId);
 });
+
+Broadcast::channel('public.test', function () {
+    return [
+        "test" => "Thành công",
+    ];
+});
